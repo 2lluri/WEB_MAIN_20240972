@@ -1,12 +1,23 @@
-document.getElementById("search_btn").addEventListener('click', search_message);
+function googleSearch() {
+  const searchInput = document.getElementById('search_input');
+  const searchTerm = searchInput.value.trim();
 
-function search_message(){
-    alert("검색을 수행합니다!");
-}
-
-function googleSearch(){
-    const searchTerm = document.getElementById("search_input").value;
-    const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(searchTerm)}`;
-    window.open(googleSearchUrl, "_blank");
+  if (searchTerm.length === 0) {
+    alert("검색어를 입력해주세요.");
+    searchInput.focus();
     return false;
+  }
+
+  const profanityList = ["바보", "멍청이", "나쁜말1", "나쁜말2", "욕설"];
+  for (let i = 0; i < profanityList.length; i++) {
+    if (searchTerm.includes(profanityList[i])) {
+      alert("부적절한 검색어(비속어)가 포함되어 있습니다.");
+      searchInput.value = '';
+      return false;
+    }
+  }
+
+  const url = `https://www.google.com/search?q=${encodeURIComponent(searchTerm)}`;
+  window.open(url, "_blank");
+  return false;
 }
