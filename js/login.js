@@ -32,15 +32,6 @@ function session_get() {
   }
 }
 
-function session_del() {
-  if (sessionStorage) {
-    sessionStorage.removeItem("Session_Storage_test");
-    alert('로그아웃 버튼 클릭 확인 : 세션 스토리지를 삭제합니다.');
-  } else {
-    alert("세션 스토리지 지원 x");
-  }
-}
-
 function login_failed() {
   let count = parseInt(getCookie("login_fail_cnt")) || 0;
   count++;
@@ -178,13 +169,11 @@ function logout() {
   location.href = "../index.html";
 }
 
-function session_del()
-{
-    if(sessionStorage)
-    {
-        sessionStorage.removeltem("Session_Storage_test");
-        alert('로그아웃 버튼 클릭 확인 : 세션 스토리지를 삭제합니다.');
-    } else{
-        alert("세션 스토리지 지원 X");
-    }
+function session_del() {
+  if (sessionStorage) {
+    sessionStorage.removeItem("Session_Storage_test");
+    alert('로그아웃 버튼 클릭 확인 : 세션 스토리지를 삭제합니다.');
+  } else {
+    alert("세션 스토리지 지원 x");
+  }
 }

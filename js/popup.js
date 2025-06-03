@@ -1,19 +1,19 @@
 function setCookie(name, value, expiredays) {
-  var date = new Date();
+  const date = new Date();
   date.setDate(date.getDate() + expiredays);
-  var cookieValue = escape(value);
-  document.cookie = escape(name) + "=" + escape(value) + "; expires =" + date.toUTCString()+"; path=/" + "; Sa,eSote=None; Secure";
+  const cookieValue = encodeURIComponent(value);
+  document.cookie = `${encodeURIComponent(name)}=${cookieValue}; expires=${date.toUTCString()}; path=/; SameSite=None; Secure`;
 }
 
 function getCookie(name) {
-  var cookie = document.cookie;
+  const cookie = document.cookie;
   console.log("쿠키를 요청합니다.");
-  if (cookie != "") {
-    var cookie_array = cookie.split("; ");
-    for (var index in cookie_array) {
-      var cookie_name = cookie_array[index].split("=");
-      if (cookie_name[0] == name) {
-        return cookie_name[1];
+  if (cookie !== "") {
+    const cookie_array = cookie.split("; ");
+    for (const item of cookie_array) {
+      const [cookie_name, cookie_value] = item.split("=");
+      if (cookie_name === name) {
+        return cookie_value;
       }
     }
   }
@@ -21,19 +21,20 @@ function getCookie(name) {
 }
 
 function pop_up() {
-  var cookieCheck = getCookie("popupid");
-  if (cookieCheck != "N") {
-    window.open("../popup/popup.html", "팝업테스트", "width=400, height=300, top=10, left=10");
+  const cookieCheck = getCookie("popupid");
+  if (cookieCheck !== "N") {
+    window.open("../popup/popup.html", "팝업테스트", "width=400,height=300,top=10,left=10");
   }
 }
 
- function closePopup() {
- if (document.getElementById('check_popup').value) {
- setCookie("popupid", "N", 1);
- console.log("쿠키를 설정합니다.");
- self.close();
- }
- }
+function closePopup() {
+  const checkbox = document.getElementById('check_popup');
+  if (checkbox && checkbox.checked) {
+    setCookie("popupid", "N", 1);
+    console.log("쿠키를 설정합니다.");
+  }
+  self.close();
+}
 
 function show_clock() {
   const currentDate = new Date();
@@ -41,23 +42,18 @@ function show_clock() {
   let msg = "현재 시간 : ";
 
   if (currentDate.getHours() > 12) {
-    msg += "오후 " + (currentDate.getHours() - 12) + "시 ";
+    msg += `오후 ${currentDate.getHours() - 12}시 `;
   } else {
-    msg += "오전 " + currentDate.getHours() + "시 ";
+    msg += `오전 ${currentDate.getHours()}시 `;
   }
 
-  msg += currentDate.getMinutes() + "분 " + currentDate.getSeconds() + "초";
+  msg += `${currentDate.getMinutes()}분 ${currentDate.getSeconds()}초`;
   divClock.innerText = msg;
 
-  if (currentDate.getMinutes() > 58) {
-    divClock.style.color = "red";
-  } else {
-    divClock.style.color = "black";
-  }
+  divClock.style.color = currentDate.getMinutes() > 58 ? "red" : "black";
 
   setTimeout(show_clock, 1000);
 }
-
 
 function over(obj) {
   obj.src = "image/LOGO.png";
@@ -68,6 +64,5 @@ function out(obj) {
 }
 
 function search_message() {
-  const c = '검색을 수행합니다';
-  alert(c);
+  alert("검색을 수행합니다");
 }

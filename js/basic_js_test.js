@@ -17,6 +17,5 @@ console.log(c_1);
 
 let d = 5;
 console.log(d);
-
 const e = '상수1 접근';
 console.log(e);
