@@ -1,27 +1,30 @@
-import CryptoJS from "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js";
+const secretKey = CryptoJS.enc.Utf8.parse("key".padEnd(32, " "));  // 256bit key
+const iv = CryptoJS.enc.Utf8.parse("1234567890123456");            // 128bit IV (CBC용)
 
-export async function encrypt_text(data) {
-  const key = "key".padEnd(32, " ");
-  const iv = CryptoJS.enc.Utf8.parse(""); // CBC 모드 기본 IV
-
-  const encrypted = CryptoJS.AES.encrypt(data, CryptoJS.enc.Utf8.parse(key), {
-    iv: iv,
-    padding: CryptoJS.pad.Pkcs7,
-    mode: CryptoJS.mode.CBC
-  });
-
-  return encrypted.toString();
+function encrypt_text(data) {
+  try {
+    const encrypted = CryptoJS.AES.encrypt(data, secretKey, {
+      iv: iv,
+      mode: CryptoJS.mode.CBC,
+      padding: CryptoJS.pad.Pkcs7
+    });
+    return encrypted.toString(); // Base64로 인코딩된 문자열
+  } catch (e) {
+    console.error("암호화 실패:", e);
+    return null;
+  }
 }
 
-export async function decrypt_text(data) {
-  const key = "key".padEnd(32, " ");
-  const iv = CryptoJS.enc.Utf8.parse("");
-
-  const decrypted = CryptoJS.AES.decrypt(data, CryptoJS.enc.Utf8.parse(key), {
-    iv: iv,
-    padding: CryptoJS.pad.Pkcs7,
-    mode: CryptoJS.mode.CBC
-  });
-
-  return decrypted.toString(CryptoJS.enc.Utf8);
+function decrypt_text(encryptedData) {
+  try {
+    const decrypted = CryptoJS.AES.decrypt(encryptedData, secretKey, {
+      iv: iv,
+      mode: CryptoJS.mode.CBC,
+      padding: CryptoJS.pad.Pkcs7
+    });
+    return decrypted.toString(CryptoJS.enc.Utf8);
+  } catch (e) {
+    console.error("복호화 실패:", e);
+    return null;
+  }
 }
